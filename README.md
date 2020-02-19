@@ -1,14 +1,14 @@
-# trex
+# trexim
 
 ## Getting Started
 ```bash
 # Install
-$ yarn add trex
+$ yarn add trexim
 ```
 
 ## ConfigProvider && Layout
 ```tsx
-import { ConfigProvider, Layout } from 'trex';
+import { ConfigProvider, Layout } from 'trexim';
 
 const enumList = {
   transactionType: {

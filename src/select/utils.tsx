@@ -63,7 +63,7 @@ class SelectUtils {
     // 这里必须分开做不能先生成相同的数据再统一处理. 因为消耗性能太多
 
     if (enumType) {
-      const enumItem = enumList[enumType];
+      const enumItem = enumList[enumType] || {};
       return this.handleObject2Options(enumItem);
     }
 
