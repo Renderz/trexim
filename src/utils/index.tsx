@@ -3,7 +3,9 @@ import moment from 'moment';
 import { globalContext } from '../configProvider';
 import { ValueFormatType } from '../typings';
 
-export function currency(text: number | string, rate: number = 2, precision: number = 2) {
+export function currency(text: any, rate: number = 2, precision: number = 2) {
+  if ([null, undefined].includes(text)) return text;
+
   const ratio = 10 ** rate;
   const str = `${(Number(text) / ratio).toFixed(Math.max(precision, 0))}`;
   const int = str.substring(0, str.indexOf('.')).replace(/\B(?=(?:\d{3})+$)/g, ',');
@@ -14,14 +16,18 @@ export function currency(text: number | string, rate: number = 2, precision: num
 /**
  * 类型格式化的方法, 内置获取enumList
  */
-export function useFormatter(valueType: ValueFormatType, value: any): any {
+export function useFormatter(value: any, valueType?: ValueFormatType): any {
   const { enumList = {} } = useContext(globalContext);
+
+  if (!valueType) return value;
+
   const { type } = valueType;
 
   if (type === 'enum') {
     const { enumType } = valueType;
 
     const enumItem = enumType && enumList[enumType];
+
     return enumItem && enumItem[value];
   }
 

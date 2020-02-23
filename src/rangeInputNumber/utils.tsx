@@ -10,7 +10,7 @@ class InputNumberUtils {
   props: RangeInputNumberProps;
 
   getContent = (): React.ReactNode => {
-    const { range, value = [], defaultValue = [], separator = ' ~', id, ...rest } = this.props;
+    const { value = [], defaultValue = [], separator = ' ~', id, ...rest } = this.props;
 
     const [valuePair, setValuePair] = useState(value);
 
@@ -46,7 +46,7 @@ class InputNumberUtils {
           onChange={onChange(0)}
           value={valuePair[0]}
           defaultValue={defaultValue[0]}
-        ></InputNumber>
+        />
         <Input
           style={{
             width: '20%',
@@ -56,14 +56,14 @@ class InputNumberUtils {
           }}
           placeholder={separator}
           disabled
-        ></Input>
+        />
         <InputNumber
           {...rest}
           onChange={onChange(1)}
           style={{ width: '40%', borderLeft: 0 }}
           value={valuePair[1]}
           defaultValue={defaultValue[1]}
-        ></InputNumber>
+        />
       </Input.Group>
     );
   };
