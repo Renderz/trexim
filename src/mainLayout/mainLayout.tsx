@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Layout } from 'antd';
 import { useMediaQuery } from 'react-responsive';
-import { globalContext } from '../configProvider';
+import { context } from '../configProvider';
 import LayoutContext from './context';
 import Sider from './sider';
 import Header from './header';
@@ -24,7 +24,7 @@ const MainLayout: React.FC<MainLayoutProps> = props => {
     contentRender,
   } = props;
 
-  const { menuData } = useContext(globalContext);
+  const { menuData } = useContext(context);
 
   const isMobile = useMediaQuery({ maxWidth: '767px' }, undefined, handleMediaQueryChange);
 

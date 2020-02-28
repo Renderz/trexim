@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import { IConfig } from './typings';
+import { ConfigProviderProps } from './typings';
 
-const globalContext: React.Context<IConfig> = createContext({});
+const context: React.Context<ConfigProviderProps> = createContext({});
 
-export default globalContext;
+export default context;

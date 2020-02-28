@@ -1,8 +1,11 @@
 import { ResizeCallbackData } from 'react-resizable';
 import { TableProps } from 'antd/es/table/Table';
 import { ColumnType } from 'antd/es/table/interface';
+import { TooltipProps } from 'antd/es/tooltip';
 import { FormItemProps, FormProps, FormInstance } from 'antd/lib/form';
 import { ValueFormatType } from '../typings';
+
+type RenderFunc = (value: any) => React.ReactNode;
 
 export type EditFunc<RecordType> = (key: string, record: RecordType) => void;
 
@@ -37,6 +40,8 @@ export interface ResizableHeaderProps extends React.HTMLAttributes<HTMLElement> 
 export interface ExColumnType<RecordType> extends Omit<ColumnType<RecordType>, 'render'> {
   valueType?: ValueFormatType;
   editable?: boolean;
+  tooltip?: boolean | RenderFunc;
+  tooltipProps?: TooltipProps;
   formItemProps?: FormItemProps;
   render?: (
     value: any,

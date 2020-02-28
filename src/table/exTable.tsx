@@ -17,7 +17,7 @@ import EditableContext from './context';
 import ResizableHeader from './resizableHeader';
 import EditableRow from './editableRow';
 import EditableCell from './editableCell';
-import { useFormatter } from '../utils';
+import Formatter from '../formatter';
 import './index.less';
 
 function ExTable<RecordType extends object>(props: ExTableProps<RecordType>) {
@@ -39,8 +39,6 @@ function ExTable<RecordType extends object>(props: ExTableProps<RecordType>) {
   const [childSeq, setChildSeq] = useState(0);
   const [editingKeys, setEditingKeys] = useState<string[]>([]);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
-
-  const formatter = useFormatter.bind(null);
 
   const getKey = (record: RecordType): string => {
     const key = typeof rowKey === 'function' ? rowKey(record) : record[rowKey];
@@ -131,7 +129,7 @@ function ExTable<RecordType extends object>(props: ExTableProps<RecordType>) {
 
   const mergedColumns = columns.map(
     (col, index): ExColumnType<RecordType> => {
-      const { valueType, editable, formItemProps, render } = col;
+      const { valueType, editable, tooltip, tooltipProps, formItemProps, render } = col;
       return {
         ...col,
         onHeaderCell: resizable
@@ -147,24 +145,31 @@ function ExTable<RecordType extends object>(props: ExTableProps<RecordType>) {
               editing: editingKeys.includes(getKey(record)),
             })
           : undefined,
-        render: valueType
-          ? value => formatter(valueType, value)
-          : render &&
-            ((text, record, recordIndex) => (
-              <EditableContext.Consumer>
-                {form => {
-                  const key = getKey(record);
-                  const editForm = {
-                    editing: editingKeys.includes(key),
-                    save: () => save(key, form),
-                    cancel: () => cancel(key, record),
-                    edit: () => edit(key, record),
-                    add: () => add(key, record),
-                  };
-                  return render(text, record, recordIndex, editForm);
-                }}
-              </EditableContext.Consumer>
-            )),
+        render: (text, record, recordIndex) => (
+          <EditableContext.Consumer>
+            {form => {
+              const key = getKey(record);
+              const editForm = {
+                editing: editingKeys.includes(key),
+                save: () => save(key, form),
+                cancel: () => cancel(key, record),
+                edit: () => edit(key, record),
+                add: () => add(key, record),
+              };
+
+              const content = render ? render(text, record, recordIndex, editForm) : text;
+
+              return (
+                <Formatter
+                  value={content}
+                  valueType={valueType}
+                  tooltip={tooltip}
+                  tooltipProps={tooltipProps}
+                />
+              );
+            }}
+          </EditableContext.Consumer>
+        ),
       };
     },
   );
@@ -185,11 +190,13 @@ function ExTable<RecordType extends object>(props: ExTableProps<RecordType>) {
 
     const combinedChildren = [...extendChildren, ...children];
 
-    return {
-      ...record,
-      [childrenColumnName]:
-        combinedChildren.length > 0 ? combinedChildren.map(mergeData) : undefined,
-    };
+    const result = { ...record };
+
+    if (combinedChildren.length > 0) {
+      result[childrenColumnName] = combinedChildren.map(mergeData);
+    }
+
+    return result;
   };
 
   const mergedDataSource = dataSource.map(mergeData);
@@ -219,6 +226,7 @@ function ExTable<RecordType extends object>(props: ExTableProps<RecordType>) {
   return (
     <Table
       {...tableProps}
+      rowKey={rowKey}
       expandedRowKeys={expandedRowKeys}
       onExpandedRowsChange={onExpandedRowsChange as (key: React.ReactText[]) => void}
       components={components}
@@ -228,9 +236,5 @@ function ExTable<RecordType extends object>(props: ExTableProps<RecordType>) {
     />
   );
 }
-
-ExTable.defaultProps = {
-  resizable: false,
-};
 
 export default ExTable;

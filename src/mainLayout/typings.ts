@@ -1,8 +1,8 @@
-import RouterTypes from 'umi/routerTypes';
+import { RouteComponentProps } from 'react-router';
 import { MenuMode } from 'antd/es/menu';
 import { MenuDataItem } from '../typings';
 
-export interface BaseMenuProps extends RouterTypes {
+export interface BaseMenuProps extends RouteComponentProps {
   menuData?: MenuDataItem[];
   mode?: MenuMode;
 }

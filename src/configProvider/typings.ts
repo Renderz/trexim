@@ -1,6 +1,6 @@
 import { EnumListType, MenuDataItem } from '../typings';
 
-export interface IConfig {
+export interface ConfigProviderProps {
   enumList?: EnumListType;
   menuData?: MenuDataItem[];
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Descriptions } from 'antd';
-import { useFormatter } from '../utils';
+import Formatter from '../formatter';
 import { ExDescriptionsProps, DescriptionsProps } from './typings';
 
 class DescriptionsUtils<RecordType> {
@@ -27,20 +27,20 @@ class DescriptionsUtils<RecordType> {
   getDescriptionItem = (): React.ReactNode => {
     const { schema = [], data } = this.props;
     return schema.map(item => {
-      const { label, span, valueType, render, key, dataIndex } = item;
+      const { label, span, valueType, render, tooltip, tooltipProps, key, dataIndex } = item;
 
-      let text = dataIndex && data && data[dataIndex];
+      const text = dataIndex && data && data[dataIndex];
 
-      // valueType优先级高于render
-      if (valueType) {
-        text = useFormatter(valueType, text);
-      } else {
-        text = render ? render(text, data) : text;
-      }
+      const content = render ? render(text, data) : text;
 
       return (
         <Descriptions.Item label={label} span={span} key={key}>
-          {text}
+          <Formatter
+            value={content}
+            valueType={valueType}
+            tooltip={tooltip}
+            tooltipProps={tooltipProps}
+          />
         </Descriptions.Item>
       );
     });
