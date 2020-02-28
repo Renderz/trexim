@@ -8,4 +8,5 @@ export { default as ExForm, useForm } from './form';
 export { default as ExTable } from './table';
 export { default as ExLoader } from './loader';
 export { default as ExLayout } from './mainLayout';
+export { default as Formatter } from './formatter';
 export * from './utils';
