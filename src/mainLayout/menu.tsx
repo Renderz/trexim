@@ -1,26 +1,33 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Menu } from 'antd';
 import { withRouter } from 'umi';
 import { MenuUtils } from './utils';
 import { BaseMenuProps } from './typings';
+import { context } from '../configProvider';
 import styles from './index.less';
 
 const BaseMenu: React.FC<BaseMenuProps> = props => {
   const {
-    menuData = [],
     mode,
     location: { pathname = '/' },
   } = props;
 
-  const menuUtils = new MenuUtils(props);
+  const { menuData } = useContext(context);
+
+  const menuUtils = new MenuUtils();
 
   const menuProps = menuUtils.getMenuProps(pathname, menuData);
 
-  return (
-    <Menu mode={mode} {...menuProps} className={styles.menus} theme="dark">
-      {menuUtils.getMenuItems(menuData)}
-    </Menu>
-  );
+  const content = menuUtils.getMenuItems(menuData);
+
+  if (content.length >= 1) {
+    return (
+      <Menu mode={mode} {...menuProps} className={styles.menus} theme="dark">
+        {content.length > 1 && content}
+      </Menu>
+    );
+  }
+  return null;
 };
 
 export default withRouter(BaseMenu);

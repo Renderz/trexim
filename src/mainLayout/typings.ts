@@ -1,9 +1,7 @@
 import { RouteComponentProps } from 'react-router';
 import { MenuMode } from 'antd/es/menu';
-import { MenuDataItem } from '../typings';
 
 export interface BaseMenuProps extends RouteComponentProps {
-  menuData?: MenuDataItem[];
   mode?: MenuMode;
 }
 
@@ -16,9 +14,12 @@ export interface MainLayoutProps {
   siderStyle?: React.CSSProperties;
   siderClass?: string;
   siderRender?: (collapsed?: boolean) => React.ReactNode;
+  siderWidth?: number;
   contentStyle?: React.CSSProperties;
   contentClass?: string;
   contentRender?: (children?: React.ReactNode) => React.ReactNode;
+  isTab?: boolean;
+  onDelete?: (path: string) => void;
 }
 
 export interface HeaderProps {
@@ -34,13 +35,16 @@ export interface SiderProps {
   className?: string;
   style?: React.CSSProperties;
   render?: (collapsed?: boolean) => React.ReactNode;
+  width?: number;
 }
 
-export interface ContentProps {
+export interface ContentProps extends RouteComponentProps {
   children?: React.ReactNode;
   style?: React.CSSProperties;
   className?: string;
   render?: (children?: React.ReactNode) => React.ReactNode;
+  isTab?: boolean;
+  onDelete?: (path: string) => void;
 }
 
 export interface FooterProps {}

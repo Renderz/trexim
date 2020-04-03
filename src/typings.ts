@@ -4,6 +4,25 @@ export type EnumListType = {
   };
 };
 
+export type CascaderType = {
+  label: string;
+  value: string;
+  children?: CascaderType[];
+};
+
+export type CascaderList = {
+  [propName: string]: CascaderType[];
+};
+
+export type KeyMap = {
+  name?: string;
+  key?: string;
+  path?: string;
+  icon?: string;
+  hide?: string;
+  children?: string;
+};
+
 export interface MenuDataItem {
   authority?: string[] | string;
   children?: MenuDataItem[];

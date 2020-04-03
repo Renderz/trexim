@@ -5,7 +5,7 @@ export interface RangeInputNumberProps
   value?: number[];
   defaultValue?: number[];
   separator?: string;
-  onChange?: (value?: number[]) => void;
+  onChange?: (value?: Array<number | undefined>) => void;
 }
 
 export { InputNumberProps };

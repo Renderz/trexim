@@ -7,11 +7,11 @@ import { SiderProps } from './typings';
 import styles from './index.less';
 
 const Sider: React.FC<SiderProps> = props => {
-  const { background, logo = [], style, className, render = () => null } = props;
+  const { background, logo = [], style, className, render = () => null, width = 256 } = props;
 
   const [normalLogo, smallLogo] = logo;
 
-  const { menuData, collapsed } = useContext(LayoutContext);
+  const { collapsed } = useContext(LayoutContext);
 
   const menuMode = collapsed ? 'vertical' : 'inline';
 
@@ -23,7 +23,7 @@ const Sider: React.FC<SiderProps> = props => {
 
   return (
     <Layout.Sider
-      width={256}
+      width={width}
       collapsed={collapsed}
       collapsible
       trigger={null}
@@ -34,7 +34,7 @@ const Sider: React.FC<SiderProps> = props => {
       <div className={logoClass} style={{ ...logoStyle, ...style }}>
         {render(collapsed)}
       </div>
-      <Menu menuData={menuData} mode={menuMode} />
+      <Menu mode={menuMode} />
     </Layout.Sider>
   );
 };

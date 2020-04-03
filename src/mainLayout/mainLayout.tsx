@@ -1,7 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Layout } from 'antd';
 import { useMediaQuery } from 'react-responsive';
-import { context } from '../configProvider';
 import LayoutContext from './context';
 import Sider from './sider';
 import Header from './header';
@@ -18,13 +17,14 @@ const MainLayout: React.FC<MainLayoutProps> = props => {
     siderLogo,
     siderClass,
     siderStyle,
+    siderWidth,
     siderRender,
     contentClass,
     contentStyle,
     contentRender,
+    isTab,
+    onDelete,
   } = props;
-
-  const { menuData } = useContext(context);
 
   const isMobile = useMediaQuery({ maxWidth: '767px' }, undefined, handleMediaQueryChange);
 
@@ -41,7 +41,6 @@ const MainLayout: React.FC<MainLayoutProps> = props => {
       value={{
         isMobile,
         collapsed,
-        menuData,
       }}
     >
       <Layout style={{ minHeight: '100%' }} hasSider>
@@ -51,6 +50,7 @@ const MainLayout: React.FC<MainLayoutProps> = props => {
           style={siderStyle}
           className={siderClass}
           render={siderRender}
+          width={siderWidth}
         />
         <Layout>
           <Header
@@ -59,7 +59,13 @@ const MainLayout: React.FC<MainLayoutProps> = props => {
             className={headerClass}
             style={headerStyle}
           />
-          <Content style={contentStyle} className={contentClass} render={contentRender}>
+          <Content
+            style={contentStyle}
+            className={contentClass}
+            render={contentRender}
+            isTab={isTab}
+            onDelete={onDelete}
+          >
             {children}
           </Content>
           {/* <Layout.Footer></Layout.Footer> */}

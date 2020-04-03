@@ -1,8 +1,6 @@
 import { createContext } from 'react';
-import { MenuDataItem } from '../typings';
 
 export interface LayoutContext {
-  menuData?: MenuDataItem[];
   isMobile?: boolean;
   collapsed?: boolean;
 }

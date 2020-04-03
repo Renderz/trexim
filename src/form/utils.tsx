@@ -134,7 +134,7 @@ class FormUtils {
     const { hide, colProps, ...formItemProps } = item;
     if (hide) return null;
     return (
-      <Col {...colProps} key={index} {...this.getColLayout()}>
+      <Col {...this.getColLayout()} {...colProps} key={index}>
         <Form.Item {...formItemProps}></Form.Item>
       </Col>
     );

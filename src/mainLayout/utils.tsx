@@ -1,24 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Menu } from 'antd';
+import { StarOutlined } from '@ant-design/icons';
 import { Link } from 'umi';
-import { BaseMenuProps } from './typings';
-import { MenuDataItem } from '../typings';
+import { context } from '../configProvider';
+import { MenuDataItem, KeyMap } from '../typings';
 
 /**
  * Menu相关helpers
  */
 export class MenuUtils {
-  constructor(props: BaseMenuProps) {
-    this.props = props;
+  constructor() {
+    const { menuKeyMap } = useContext(context);
+    this.keyMap = menuKeyMap;
   }
 
-  props: BaseMenuProps;
+  keyMap?: KeyMap;
 
   /**
    * 主进程
    */
-  getMenuItems = (menuData: MenuDataItem[]): React.ReactNode =>
-    menuData.filter(item => item.name && !item.hide).map(item => this.getSubMenuOrItem(item));
+  getMenuItems = (menuData?: MenuDataItem[]): React.ReactNode[] =>
+    (menuData || [])
+      .filter(item => this.getName(item) && !this.getHide(item))
+      .map(item => this.getSubMenuOrItem(item));
 
   /**
    * 渲染方法
@@ -28,14 +32,16 @@ export class MenuUtils {
 
     const key = this.getKey(item);
 
-    const path = this.conversionPath(item.path);
+    const path = this.conversionPath(this.getPath(item));
 
     const isHttpUrl = this.isHttpUrl(path);
 
-    if (Array.isArray(item.children) && item.children.some(child => child && !!child.name)) {
+    const children = this.getChildren(item);
+
+    if (Array.isArray(children) && children.some(child => child && !!this.getName(child))) {
       return (
         <Menu.SubMenu title={title} key={key}>
-          {this.getMenuItems(item.children)}
+          {this.getMenuItems(children)}
         </Menu.SubMenu>
       );
     }
@@ -56,7 +62,9 @@ export class MenuUtils {
    * TODO: 这里的默认值怎么搞???
    */
   getKey = (item: MenuDataItem): string => {
-    const key = item.key || item.path || '__BLANK_KEY__';
+    const target1 = this.keyMap?.key || 'key';
+    const target2 = this.keyMap?.path || 'path';
+    const key = item[target1] || item[target2] || '__BLANK_KEY__';
     return key;
   };
 
@@ -65,17 +73,42 @@ export class MenuUtils {
    * TODO: 对接异步Icon组件
    */
   getTitle = (item: MenuDataItem): React.ReactNode => {
-    const title = item.icon ? (
+    const title = this.getIcon(item) ? (
       <span>
-        {item.icon}
+        {this.getIcon(item)}
         {/* TODO: 对接异步Icon组件 */}
         {/* <StarOutlined /> */}
-        <span>{item.name}</span>
+        <span>{this.getName(item)}</span>
       </span>
     ) : (
-      item.name
+      this.getName(item)
     );
     return title;
+  };
+
+  getIcon = (item: MenuDataItem): React.ReactNode => {
+    const target = this.keyMap?.icon || 'icon';
+    return item[target] || <StarOutlined />;
+  };
+
+  getName = (item: MenuDataItem): string => {
+    const target = this.keyMap?.name || 'name';
+    return item[target];
+  };
+
+  getPath = (item: MenuDataItem): string => {
+    const target = this.keyMap?.path || 'path';
+    return item[target];
+  };
+
+  getHide = (item: MenuDataItem): boolean => {
+    const target = this.keyMap?.hide || 'hide';
+    return Boolean(Number(item[target]));
+  };
+
+  getChildren = (item: MenuDataItem): MenuDataItem[] => {
+    const target = this.keyMap?.children || 'children';
+    return item[target];
   };
 
   /**
@@ -93,12 +126,13 @@ export class MenuUtils {
    */
   getMenuProps = (
     pathname: string,
-    menuData: MenuDataItem[],
+    menuData?: MenuDataItem[],
   ): { selectedKeys?: string[]; defaultOpenKeys?: string[] } => {
-    const flatMenu = this.getFlatMenus(menuData, []);
+    const flatMenu = this.getFlatMenus(menuData, [], false);
+
     const selectedMenuItem = flatMenu[pathname] || {};
 
-    const selectedKey = this.getKey(selectedMenuItem);
+    const selectedKey = selectedMenuItem.key;
     const selectedKeys = selectedKey ? [selectedKey] : undefined;
     const defaultOpenKeys = selectedMenuItem.parentKeys;
 
@@ -114,19 +148,24 @@ export class MenuUtils {
   getFlatMenus = (
     menuData: MenuDataItem[] = [],
     parentKeys: string[],
+    returnHide: boolean,
   ): {
     [key: string]: MenuDataItem;
   } => {
     let menus = {};
     menuData.forEach(item => {
-      if (!item || item.hide) {
+      if (!item || (!returnHide && this.getHide(item))) {
         return;
       }
-      const { name, path } = item;
-      menus[item.path || '/'] = { name, path, parentKeys };
-      if (item.children) {
+      const key = this.getKey(item);
+      const name = this.getName(item);
+      const path = this.getPath(item);
+      const children = this.getChildren(item);
+
+      menus[path || '/'] = { key, name, path, parentKeys };
+      if (children) {
         const newParentKey = [...parentKeys, this.getKey(item)];
-        menus = { ...menus, ...this.getFlatMenus(item.children, newParentKey) };
+        menus = { ...menus, ...this.getFlatMenus(children, newParentKey, returnHide) };
       }
     });
     return menus;

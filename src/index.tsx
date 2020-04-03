@@ -1,6 +1,7 @@
 export { default as ConfigProvider } from './configProvider';
 export { default as ExUpload } from './upload';
 export { default as ExSelect } from './select';
+export { default as ExCascader } from './cascader';
 export { default as ExFormCard } from './formCard';
 export { default as ExRangeInputNumber } from './rangeInputNumber';
 export { default as ExDescriptions } from './descriptions';

@@ -9,7 +9,11 @@ type RenderFunc = (value: any) => React.ReactNode;
 
 export type EditFunc<RecordType> = (key: string, record: RecordType) => void;
 
-export type SaveFunc = (key: string, formInstance: FormInstance) => void;
+export type SaveFunc<RecordType> = (
+  key: string,
+  formInstance: FormInstance,
+  record: RecordType,
+) => void;
 
 export type CancelFunc<RecordType> = (key: string, record: RecordType) => void;
 
@@ -26,7 +30,7 @@ export type EditFormType = {
 // react-resizable的Resize方法类型
 export type ResizeFunc = (e: React.SyntheticEvent, data: ResizeCallbackData) => void;
 
-export type EditingChildren = {
+export type EditingItem = {
   [key: string]: string;
 };
 
@@ -39,6 +43,7 @@ export interface ResizableHeaderProps extends React.HTMLAttributes<HTMLElement> 
 // 在columnType基础上增加一些定制化的参数
 export interface ExColumnType<RecordType> extends Omit<ColumnType<RecordType>, 'render'> {
   valueType?: ValueFormatType;
+  resizable?: boolean;
   editable?: boolean;
   tooltip?: boolean | RenderFunc;
   tooltipProps?: TooltipProps;
@@ -61,6 +66,7 @@ export interface ExTableProps<RecordType> extends TableProps<RecordType> {
     key: string,
     formInstance: FormInstance,
     parentKey: string,
+    record: RecordType,
   ) => Promise<boolean | undefined>;
   onCancel?: (key: string, record: RecordType) => Promise<boolean | undefined>;
   onAdd?: (key: string, record: RecordType) => Promise<boolean | undefined>;

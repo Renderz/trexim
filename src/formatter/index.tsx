@@ -6,7 +6,7 @@ import { currency } from '../utils';
 import { FormatterProps } from './typings';
 
 const Formatter: React.FC<FormatterProps> = props => {
-  const { value, valueType, tooltip, tooltipProps } = props;
+  const { value, valueType, tooltip, tooltipProps, children } = props;
 
   const { enumList = {} } = useContext(context);
 
@@ -43,13 +43,13 @@ const Formatter: React.FC<FormatterProps> = props => {
     }
 
     return (
-      <Tooltip title={title} {...tooltipProps}>
-        {formattedValue}
+      <Tooltip title={title} autoAdjustOverflow placement="topLeft" {...tooltipProps}>
+        {children || formattedValue}
       </Tooltip>
     );
   }
 
-  return formattedValue;
+  return <span>{children || formattedValue}</span>;
 };
 
 export default Formatter;

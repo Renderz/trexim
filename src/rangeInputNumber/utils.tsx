@@ -12,27 +12,37 @@ class InputNumberUtils {
   getContent = (): React.ReactNode => {
     const { value = [], defaultValue = [], separator = ' ~', id, ...rest } = this.props;
 
-    const [valuePair, setValuePair] = useState(value);
+    const [valuePair, setValuePair] = useState<Array<number | undefined>>(value);
 
-    const triggerChange = (_valuePair: number[]) => {
+    const triggerChange = (_valuePair: Array<number | undefined>) => {
       setValuePair(_valuePair);
       if (this.props.onChange) {
         this.props.onChange(_valuePair);
       }
     };
 
-    const onChange = (type: number) => (rawValue?: any): void => {
-      const number = Number(rawValue);
+    const onChange = (type: number) => (rawValue?: number | string): void => {
+      let number;
 
-      if (!Number.isNaN(number)) {
-        const newValuePair = [...valuePair];
-        newValuePair[type] = number;
-        triggerChange(newValuePair);
+      if (typeof rawValue === 'number') {
+        number = rawValue;
+      } else if (rawValue === '') {
+        number = undefined;
+      } else {
+        return;
       }
+
+      const newValuePair = [...valuePair];
+      newValuePair[type] = number;
+      triggerChange(newValuePair);
     };
 
     const onBlur = (): void => {
       const [value0, value1] = valuePair;
+      if (value0 === undefined || value1 === undefined) {
+        return;
+      }
+
       if (value0 > value1) {
         triggerChange([value1, value0]);
       }
