@@ -1,4 +1,4 @@
-export { default as ConfigProvider } from './configProvider';
+export { default as ConfigProvider, context } from './configProvider';
 export { default as ExUpload } from './upload';
 export { default as ExSelect } from './select';
 export { default as ExCascader } from './cascader';

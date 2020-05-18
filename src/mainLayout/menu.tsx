@@ -20,14 +20,11 @@ const BaseMenu: React.FC<BaseMenuProps> = props => {
 
   const content = menuUtils.getMenuItems(menuData);
 
-  if (content.length >= 1) {
-    return (
-      <Menu mode={mode} {...menuProps} className={styles.menus} theme="dark">
-        {content.length > 1 && content}
-      </Menu>
-    );
-  }
-  return null;
+  return (
+    <Menu mode={mode} {...menuProps} className={styles.menus} theme="dark">
+      {content.length >= 1 && content}
+    </Menu>
+  );
 };
 
 export default withRouter(BaseMenu);

@@ -10,7 +10,7 @@ class UploadUtils {
 
   getUploadProps = (): UploadProps => {
     const { manual, amount = 0, ...rest } = this.props;
-    const [fileList, setFileList] = useState();
+    const [fileList, setFileList] = useState<any[]>([]);
     if (manual) {
       const { beforeUpload, onRemove } = rest;
       return {

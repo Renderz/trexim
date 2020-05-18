@@ -32,10 +32,22 @@ const ExTable = forwardRef(
       onAdd,
       newRecord = {},
       dataSource = [],
+      columns = [],
       ...tableProps
     } = props;
 
-    const [columns, setColumns] = useState(props.columns || []);
+    function getInitialWidth(rawColumns: ExColumnType<RecordType>[] = []) {
+      const widths = {};
+      rawColumns.forEach(col => {
+        const { key, width } = col;
+        if (key) {
+          widths[key] = width;
+        }
+      });
+      return widths;
+    }
+
+    const [widths, setWidths] = useState<{}>(getInitialWidth(columns));
     const [editingChildren, setEditingChildren] = useState<EditingItem>({});
     const [childSeq, setChildSeq] = useState(0);
     const [editingKeys, setEditingKeys] = useState<string[]>([]);
@@ -66,13 +78,10 @@ const ExTable = forwardRef(
       }
     };
 
-    const handleResize = (index: number): ResizeFunc => (e, { size }) => {
-      const nextColumns = [...columns];
-      nextColumns[index] = {
-        ...nextColumns[index],
-        width: size.width,
-      };
-      setColumns(nextColumns);
+    const handleResize = (key: string): ResizeFunc => (e, { size }) => {
+      const newWidths = { ...widths };
+      newWidths[key] = size.width;
+      setWidths(newWidths);
     };
 
     const handleInsert = (key: string): void => {
@@ -135,15 +144,17 @@ const ExTable = forwardRef(
     }));
 
     const mergedColumns = columns.map(
-      (col, index): ExColumnType<RecordType> => {
+      (col): ExColumnType<RecordType> => {
         const { valueType, editable, tooltip, tooltipProps, formItemProps, fixed, render } = col;
         const mergedResizable = !fixed && (col.resizable === undefined ? resizable : col.resizable);
         return {
           ...col,
+          width: col.key && widths[col.key],
           onHeaderCell: mergedResizable
             ? (column: ExColumnType<RecordType>): ResizableHeaderProps => ({
                 width: column.width,
-                onResize: handleResize(index),
+                // onResize: handleResize(index),
+                onResize: handleResize(String(col?.key)),
               })
             : undefined,
           onCell: editable
