@@ -1,6 +1,6 @@
 {
   "name": "trexim",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Common components based on ant-design 4.0",
   "keywords": [
     "antd",
@@ -22,6 +22,7 @@
     "@umijs/fabric": "2.0.0",
     "antd": "^4.2.4",
     "classnames": "^2.2.6",
+    "dragm": "^0.0.5",
     "history": "^4.10.1",
     "moment": "^2.24.0",
     "react": "^16.12.0",
