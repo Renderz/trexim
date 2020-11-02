@@ -10,4 +10,6 @@ export { default as ExTable } from './table';
 export { default as ExLoader } from './loader';
 export { default as ExLayout } from './mainLayout';
 export { default as Formatter } from './formatter';
+export { default as ExModal } from './modal';
+export { default as Auth } from './auth';
 export * from './utils';

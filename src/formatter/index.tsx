@@ -12,6 +12,10 @@ const Formatter: React.FC<FormatterProps> = props => {
 
   let formattedValue = value;
 
+  if ([null, undefined].includes(value)) {
+    return null;
+  }
+
   if (valueType) {
     const { type } = valueType;
     if (type === 'enum') {

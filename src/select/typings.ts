@@ -28,6 +28,7 @@ export interface ExSelectProps extends SelectProps<string | number> {
   };
   disabledKeys?: string[];
   hiddenKeys?: string[];
+  showTooltip?: boolean;
   renderName?: (key: string, name: string) => string;
   renderTitle?: (key: string, name: string) => string;
 }

@@ -1,3 +1,5 @@
+import { Location } from 'history';
+
 export type EnumListType = {
   [propName: string]: {
     [propName: string]: string;
@@ -43,3 +45,7 @@ export type ValueFormatType = {
   rate?: number;
   precision?: number;
 };
+
+export interface LocationWithQuery extends Location {
+  query: object;
+}

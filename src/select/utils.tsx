@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Select } from 'antd';
+import { Select, Tooltip } from 'antd';
 import GlobalContext from '../configProvider/context';
 import {
   ExSelectProps,
@@ -31,6 +31,7 @@ class SelectUtils {
       hiddenKeys,
       renderName,
       renderTitle,
+      showTooltip,
       ...rest
     } = this.props;
 
@@ -106,19 +107,17 @@ class SelectUtils {
    * 对象转换成options的方法
    */
   handleObject2Options = (object: ObjectDataType) => {
-    const { disabledKeys = [], hiddenKeys = [] } = this.props;
+    const { disabledKeys = [], hiddenKeys = [], showTooltip } = this.props;
     return Object.keys(object)
       .filter(key => !hiddenKeys.includes(key))
       .map(key => {
-        const name = object[key];
+        const rawName = object[key];
+        const name = this.getName(key, rawName);
+        const title = this.getTitle(key, rawName);
+
         return (
-          <Option
-            value={key}
-            key={key}
-            title={this.getTitle(key, name)}
-            disabled={disabledKeys.includes(key)}
-          >
-            {this.getName(key, name)}
+          <Option value={key} key={key} title={title} disabled={disabledKeys.includes(key)}>
+            {showTooltip ? <Tooltip title={name}>{<span>{name}</span>}</Tooltip> : name}
           </Option>
         );
       });
@@ -128,22 +127,19 @@ class SelectUtils {
    * 数组转换成options的方法
    */
   handleArray2Options = (array: ArrayDataType) => {
-    const { disabledKeys = [], hiddenKeys = [] } = this.props;
+    const { disabledKeys = [], hiddenKeys = [], showTooltip } = this.props;
     return array
       .filter((item: ItemType) => {
         const { key } = this.getStandardItem(item);
         return !hiddenKeys.includes(key);
       })
       .map((item: ItemType) => {
-        const { key, name, value, title } = this.getStandardItem(item);
+        const { key, value, ...rest } = this.getStandardItem(item);
+        const title = rest.title || this.getTitle(key, rest.name);
+        const name = this.getName(key, rest.name);
         return (
-          <Option
-            value={value}
-            key={key}
-            title={title || this.getTitle(key, name)}
-            disabled={disabledKeys.includes(key)}
-          >
-            {this.getName(key, name)}
+          <Option value={value} key={key} title={title} disabled={disabledKeys.includes(key)}>
+            {showTooltip ? <Tooltip title={name}>{<span>{name}</span>}</Tooltip> : name}
           </Option>
         );
       });

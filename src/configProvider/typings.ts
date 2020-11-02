@@ -4,5 +4,6 @@ export interface ConfigProviderProps {
   enumList?: EnumListType;
   cascaderList?: CascaderList;
   menuData?: MenuDataItem[];
+  limits?: string[];
   menuKeyMap?: KeyMap;
 }

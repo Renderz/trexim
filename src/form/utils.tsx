@@ -34,6 +34,13 @@ export const colLayout = {
     lg: { span: 8, offset: 0 },
     xl: { span: 6, offset: 0 },
   },
+  5: {
+    sm: { span: 24, offset: 0 },
+    md: { span: 12, offset: 0 },
+    lg: { span: 8, offset: 0 },
+    xl: { span: 6, offset: 0 },
+    xxl: { span: 4, offset: 0 },
+  },
 };
 
 export const itemLayout = {
@@ -78,6 +85,22 @@ export const itemLayout = {
     },
   },
   4: {
+    labelCol: {
+      sm: { span: 6 },
+      md: { span: 8 },
+      lg: { span: 8 },
+      xl: { span: 9 },
+      xxl: { span: 7 },
+    },
+    wrapperCol: {
+      sm: { span: 16 },
+      md: { span: 16 },
+      lg: { span: 16 },
+      xl: { span: 15 },
+      xxl: { span: 14 },
+    },
+  },
+  5: {
     labelCol: {
       sm: { span: 6 },
       md: { span: 8 },

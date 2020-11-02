@@ -225,7 +225,7 @@ const ExTable = forwardRef(
             .map(key => ({ ...newRecord, [rowKey]: key } as RecordType))
         : [];
 
-    const mergedDataSource = dataSource.concat(newParents).map(mergeData);
+    const mergedDataSource = [...newParents, ...dataSource].map(mergeData);
 
     const components = {
       header: {

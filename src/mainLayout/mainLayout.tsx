@@ -24,6 +24,8 @@ const MainLayout: React.FC<MainLayoutProps> = props => {
     contentRender,
     isTab,
     onDelete,
+    allowDiffOnSearch,
+    contentRef,
   } = props;
 
   const isMobile = useMediaQuery({ maxWidth: '767px' }, undefined, handleMediaQueryChange);
@@ -65,6 +67,8 @@ const MainLayout: React.FC<MainLayoutProps> = props => {
             render={contentRender}
             isTab={isTab}
             onDelete={onDelete}
+            allowDiffOnSearch={allowDiffOnSearch}
+            contentRef={contentRef}
           >
             {children}
           </Content>

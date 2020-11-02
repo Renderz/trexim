@@ -15,7 +15,7 @@ export interface ExFormRowProps extends RowProps {
 export interface ExFormProps extends FormProps {
   // 支持数组嵌套数组
   itemList?: ExFormRowProps[];
-  max?: 1 | 2 | 3 | 4;
+  max?: 1 | 2 | 3 | 4 | 5;
 }
 
 export { FormInstance };
