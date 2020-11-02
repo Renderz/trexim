@@ -10,7 +10,14 @@ class InputNumberUtils {
   props: RangeInputNumberProps;
 
   getContent = (): React.ReactNode => {
-    const { value = [], defaultValue = [], separator = ' ~', id, ...rest } = this.props;
+    const {
+      value = [],
+      defaultValue = [],
+      separator = ' ~',
+      id,
+      disableChange = false,
+      ...rest
+    } = this.props;
 
     const [valuePair, setValuePair] = useState<Array<number | undefined>>(value);
 
@@ -43,7 +50,7 @@ class InputNumberUtils {
         return;
       }
 
-      if (value0 > value1) {
+      if (value0 > value1 && !disableChange) {
         triggerChange([value1, value0]);
       }
     };
