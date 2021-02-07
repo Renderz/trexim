@@ -49,7 +49,7 @@ export class MenuUtils {
     let menuItemDom: React.ReactNode;
 
     if (isHttpUrl) {
-      menuItemDom = <a href={path}>{title}</a>;
+      menuItemDom = <a onClick={() => window.open(path)}>{title}</a>;
     } else {
       menuItemDom = <Link to={path}>{title}</Link>;
     }

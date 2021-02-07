@@ -33,6 +33,8 @@ export interface MenuDataItem {
   name?: string;
   path?: string;
   key?: string;
+  // type?: 'local' | 'new';
+  // iframeUrl?: string;
   parentKeys?: string[];
   [key: string]: any;
 }
