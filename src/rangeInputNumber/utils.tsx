@@ -19,7 +19,7 @@ class InputNumberUtils {
       ...rest
     } = this.props;
 
-    const [valuePair, setValuePair] = useState<Array<number | undefined>>(value);
+    const [valuePair, setValuePair] = useState<Array<number | undefined>>(value || defaultValue);
 
     const triggerChange = (_valuePair: Array<number | undefined>) => {
       setValuePair(_valuePair);
