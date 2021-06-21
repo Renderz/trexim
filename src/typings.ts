@@ -36,6 +36,7 @@ export interface MenuDataItem {
   // type?: 'local' | 'new';
   // iframeUrl?: string;
   parentKeys?: string[];
+  newWindow?: boolean;
   [key: string]: any;
 }
 
